@@ -16,7 +16,7 @@ function makeElementDraggable(element) {
 
     function dragMouseDown(e) {
         e = e || window.event;
-        e.preventDefault();
+
         // Get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
