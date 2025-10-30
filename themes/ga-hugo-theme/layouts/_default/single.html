@@ -1,0 +1,20 @@
+<html>
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <title>Document</title>
+</head>
+<body>
+     {{ partial "header" (dict "Kind" .Kind "Template" "Single") }}
+
+     <div style="margin:25px auto;max-width:1000px;">
+          <h1 style="font-size:40px;">{{.Title}}</h1>
+          <div style="color:grey; font-size:20px;"><b>{{if .Params.author}}{{.Params.Author}}{{end}}</b></div>
+          <div style="color:grey; font-size:16px;">{{ dateFormat "Monday, Jan 2, 2006" .Date }}</div> 
+          <div style="color:grey; font-size:16px;">{{if .Params.location}}{{.Params.location}}{{end}}</div>
+          <div style="font-size:18px;">{{.Content}}</div>
+     </div>
+     {{ partial "footer" . }}
+</body>
+</html>
