@@ -1,15 +1,17 @@
-<!-- Header with responsive navigation -->
+<!-- Header with responsive dropdown navigation -->
 <header>
     <style>
-        /* Dusty rose color scheme */
+        /* Enhanced dusty rose color scheme */
         :root {
             --dusty-rose-primary: #dca1a1;
             --dusty-rose-dark: #c18888;
             --dusty-rose-light: #e8b7b7;
             --dusty-rose-hover: #bf7f7f;
+            --dusty-rose-lightest: #f8f5f5;
             --text-light: #ffffff;
             --text-dark: #333333;
             --bg-light: #ffffff;
+            --grey-light: #f0f0f0;
         }
         
         * {
@@ -53,26 +55,98 @@
             color: var(--dusty-rose-hover);
         }
         
+        /* Dropdown menu styles */
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1rem;
             align-items: center;
+        }
+        
+        .dropdown {
+            position: relative;
         }
         
         .nav-link {
             color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
             transition: all 0.3s ease;
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: inherit;
+            font-family: inherit;
         }
         
         .nav-link:hover {
             background-color: var(--dusty-rose-hover);
             transform: translateY(-2px);
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--dusty-rose-lightest);
+            min-width: 250px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid var(--grey-light);
+            margin-top: 0.5rem;
+        }
+        
+        .dropdown:hover .dropdown-menu,
+        .dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown:hover .dropdown-arrow,
+        .dropdown.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-item {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: block;
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid var(--grey-light);
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--dusty-rose-light);
+            color: var(--text-light);
+            padding-left: 1.5rem;
         }
         
         /* Social media links */
@@ -138,23 +212,69 @@
                 text-align: center;
                 transition: 0.3s;
                 box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-                gap: 1rem;
-                padding: 2rem 0;
+                gap: 0;
+                padding: 1.5rem 0;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
             }
             
             .nav-menu.active {
                 left: 0;
             }
             
-            .nav-link {
-                padding: 1rem 1.5rem;
+            .dropdown {
                 width: 90%;
                 margin: 0.5rem auto;
+            }
+            
+            .nav-link {
+                padding: 1rem 1.5rem;
+                width: 100%;
                 border-radius: 8px;
+                justify-content: center;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                background-color: var(--grey-light);
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                max-height: 500px;
+            }
+            
+            .dropdown-item {
+                padding: 0.8rem 1.5rem;
+                border-bottom: 1px solid rgba(220, 161, 161, 0.3);
+                border-radius: 0;
+            }
+            
+            .dropdown-item:first-child {
+                border-radius: 0;
+            }
+            
+            .dropdown-item:last-child {
+                border-radius: 0 0 8px 8px;
+                border-bottom: none;
+            }
+            
+            .dropdown-item:hover {
+                padding-left: 2rem;
             }
             
             .social-links {
                 margin-top: 1rem;
+                justify-content: center;
             }
             
             .logo {
@@ -174,6 +294,18 @@
         .hamburger.active .bar:nth-child(3) {
             transform: translateY(-8px) rotate(-45deg);
         }
+        
+        /* Additional mobile tweaks */
+        @media screen and (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-link {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 
     <nav class="navbar">
@@ -181,22 +313,76 @@
             <!-- Logo/Home Link -->
             <a href="/" class="logo">{{.Site.Title | default "Boldly Rose"}}</a>
             
-            <!-- Navigation Links -->
+            <!-- Navigation Menu with Dropdowns -->
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
+                <li class="dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        Facial Care
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/facial-care/cleansers" class="dropdown-item">Cleansers</a>
+                        <a href="/facial-care/moisturizers" class="dropdown-item">Moisturizers</a>
+                        <a href="/facial-care/serums" class="dropdown-item">Serums</a>
+                        <a href="/facial-care/masks" class="dropdown-item">Face Masks</a>
+                        <a href="/facial-care/essences" class="dropdown-item">Essences</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="/blog" class="nav-link">Blog</a>
+                
+                <li class="dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        Body Care
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/body-care/body-wash" class="dropdown-item">Body Wash</a>
+                        <a href="/body-care/lotions" class="dropdown-item">Body Lotions</a>
+                        <a href="/body-care/scrubs" class="dropdown-item">Body Scrubs</a>
+                        <a href="/body-care/oils" class="dropdown-item">Body Oils</a>
+                        <a href="/body-care/butter" class="dropdown-item">Body Butter</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="/products" class="nav-link">Products</a>
+                
+                <li class="dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        Food Care
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/food-care/snacks" class="dropdown-item">Healthy Snacks</a>
+                        <a href="/food-care/supplements" class="dropdown-item">Supplements</a>
+                        <a href="/food-care/teas" class="dropdown-item">Herbal Teas</a>
+                        <a href="/food-care/powders" class="dropdown-item">Superfood Powders</a>
+                        <a href="/food-care/vitamins" class="dropdown-item">Vitamins</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="/about" class="nav-link">About</a>
+                
+                <li class="dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        Sun Protection
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/sun-protection/face-spf" class="dropdown-item">Face SPF</a>
+                        <a href="/sun-protection/body-spf" class="dropdown-item">Body SPF</a>
+                        <a href="/sun-protection/lip-balm" class="dropdown-item">Lip Balm with SPF</a>
+                        <a href="/sun-protection/after-sun" class="dropdown-item">After Sun Care</a>
+                        <a href="/sun-protection/accessories" class="dropdown-item">Sun Accessories</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="/contact" class="nav-link">Contact</a>
+                
+                <li class="dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        Offers
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/offers/specials" class="dropdown-item">Special Offers</a>
+                        <a href="/offers/bundles" class="dropdown-item">Product Bundles</a>
+                        <a href="/offers/new-arrivals" class="dropdown-item">New Arrivals</a>
+                        <a href="/offers/seasonal" class="dropdown-item">Seasonal Offers</a>
+                        <a href="/offers/gift-sets" class="dropdown-item">Gift Sets</a>
+                    </div>
                 </li>
             </ul>
             
@@ -230,20 +416,63 @@
 </header>
 
 <script>
-    // Mobile navigation toggle
+    // Enhanced mobile navigation with dropdown toggle
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
+    const dropdowns = document.querySelectorAll('.dropdown');
     
+    // Hamburger menu toggle
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
     
-    // Close mobile menu when clicking on nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar') && hamburger.classList.contains('active')) {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+        }
+    });
+    
+    // Dropdown functionality for mobile
+    dropdowns.forEach(dropdown => {
+        const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+        
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Close other dropdowns on mobile
+            if (window.innerWidth <= 768) {
+                dropdowns.forEach(otherDropdown => {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('active');
+                    }
+                });
+                
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+    
+    // Handle window resize - reset mobile states
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+    
+    // Close mobile menu when clicking on menu items
+    document.querySelectorAll('.dropdown-item').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
         });
     });
 </script>
