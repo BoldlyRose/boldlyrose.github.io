@@ -1,27 +1,24 @@
 +++
 date = '2025-10-30T14:33:31+01:00'
-title = 'My First Post'
+title = 'Welcome to My Skincare Journey'
 location = 'Germany'
 author = 'Boldly Rose'
 +++
-# Welcome to My First Post
 
-Hello **world**! This is my _very first post_ on my *Hugo* site.
+# Welcome to My Skincare Journey
 
-## Here are some things I like:
+Hi everyone! I'm **Boldly Rose**, and I'm excited to share my skincare journey with you. I have normal skin, but I've been dealing with hyperpigmentation - those stubborn dark spots that just don't seem to fade. It's been a frustrating journey, but I'm learning to understand what works and what doesn't for my skin.
 
-- Coding
-- Reading 📚
-- Traveling ✈️
+I've tried so many products, and now I'm documenting what's actually making a difference. Skincare is personal, and what works for me might not work for everyone. But by sharing my experience, I hope to help others dealing with similar hyperpigmentation issues find products that actually work.
 
-> “The only way to do great work is to love what you do.”  
-> — Steve Jobs
+Follow along as I navigate through serums, treatments, and routines that promise to help with hyperpigmentation. I'll be sharing honest reviews about what's actually working to fade my dark spots.
+
 
 ---
 
-### From My Gallery
+### Morning Skin Care Routine
 
-![A beautiful sunrise over the mountains](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80)
+![Rose first photo](https://v3b.fal.media/files/b/lion/r18Ou9itg8r4EVeXz5g9k.png)
 
 ---
 
